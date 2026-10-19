@@ -2,3 +2,4 @@
 -keepclasseswithmembernames,includedescriptorclasses class * {
     native <methods>;
 }
+-keep class dev.allofus.fusioncore.repairip.** { *; }

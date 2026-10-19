@@ -43,6 +43,8 @@ import java.util.zip.ZipFile;
 import dev.allofus.fusioncore.tools.CrashDetector;
 import dev.allofus.fusioncore.tools.GlobalMetadata;
 import dev.allofus.fusioncore.tools.Utilities;
+import dev.allofus.fusioncore.repairip.bridge.PairipPatchRunner;
+import dev.allofus.fusioncore.ui.PairipPatchDialog;
 
 public class SelectorActivity extends AppCompatActivity {
     private static final String TAG = "FusionCore";
@@ -115,6 +117,16 @@ public class SelectorActivity extends AppCompatActivity {
                         var intent = new Intent(getContext(), GameSettingsActivity.class);
                         intent.putExtra(GameSettingsActivity.EXTRA_PACKAGE_NAME, entry.packageName);
                         startActivity(intent);
+                    });
+
+                    View pairipButton = convertView.findViewById(R.id.selector_action_pairip);
+                    pairipButton.setOnClickListener(v -> {
+                        if (PairipPatchRunner.isRunning()) {
+                            Toast.makeText(getContext(), "A patch is already running", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        PairipPatchDialog.newInstance(entry.packageName(), entry.label())
+                                .show(SelectorActivity.this.getSupportFragmentManager(), "pairip_patch");
                     });
 
                     ImageButton folderButton = convertView.findViewById(R.id.selector_action_folder);
